@@ -31,7 +31,7 @@ Synthetic experiments (`verify_theorem3.py`, `verify_proposition1.py`, `exp5_mul
 # Install dependencies
 pip install -r requirements.txt
 
-# All experiments use 20 seeds by default: [42, 123, 456, ..., 9000].
+# All experiments use 20 seeds by default (see config in each script).
 # To reproduce exact paper numbers, use the default seeds (no --seeds flag needed).
 
 # Section 9.3: Theorem 3 verification (V1 architecture, core result)
@@ -108,10 +108,11 @@ No model weights are redistributed in this repository. They are downloaded on de
 ## Citation
 
 ```bibtex
-@article{lei2026sign,
+@misc{lei2026sign,
   title={A Geometric Analysis of Sign-Magnitude Asymmetry in Pre-Norm Transformers under Ternary Quantization},
   author={Lei, Dong},
-  year={2026}
+  year={2026},
+  note={arXiv preprint, link to be added after submission}
 }
 ```
 

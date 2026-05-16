@@ -1,4 +1,4 @@
-torch>=2.0
-numpy>=1.24
-transformers>=4.36
-datasets>=2.16
+torch>=2.0,<3.0
+numpy>=1.24,<2.0
+transformers>=4.36,<5.0
+datasets>=2.16,<3.0

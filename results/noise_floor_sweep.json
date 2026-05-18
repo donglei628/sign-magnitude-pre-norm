@@ -1,0 +1,569 @@
+{
+  "experiment": "noise_floor_sweep",
+  "model": "TinyLlama/TinyLlama-1.1B-intermediate-step-1431k-3T",
+  "baseline_ppl": 7.382783981216292,
+  "outlier_pct": 0.05,
+  "n_seeds": 10,
+  "results": {
+    "0.05": {
+      "flip_rate": 0.05,
+      "n_flips": 2413875,
+      "seeds": [
+        {
+          "seed": 42,
+          "outlier_ppl": 34.62398258727001,
+          "nonoutlier_ppl": 7.664140200085324,
+          "ppl_leverage": 96.8210289275112,
+          "nll_leverage": 41.319048991097425,
+          "outlier_norm": 63.2302659200506,
+          "nonoutlier_norm": 60.96905833468933
+        },
+        {
+          "seed": 123,
+          "outlier_ppl": 21.839008427705995,
+          "nonoutlier_ppl": 7.623833032635023,
+          "ppl_leverage": 59.972127504362255,
+          "nll_leverage": 33.75657509783389,
+          "outlier_norm": 63.077998242689084,
+          "nonoutlier_norm": 60.975913373386625
+        },
+        {
+          "seed": 456,
+          "outlier_ppl": 26.78045687636175,
+          "nonoutlier_ppl": 7.617117998469824,
+          "ppl_leverage": 82.7778788691983,
+          "nll_leverage": 41.23627772190862,
+          "outlier_norm": 63.22592682013942,
+          "nonoutlier_norm": 60.98203500827108
+        },
+        {
+          "seed": 789,
+          "outlier_ppl": 27.4069836385653,
+          "nonoutlier_ppl": 7.5839218250396865,
+          "ppl_leverage": 99.55461029467389,
+          "nll_leverage": 48.79701742349411,
+          "outlier_norm": 63.18631188608514,
+          "nonoutlier_norm": 60.97790727617052
+        },
+        {
+          "seed": 1000,
+          "outlier_ppl": 18.542225178460054,
+          "nonoutlier_ppl": 7.618091288513388,
+          "ppl_leverage": 47.42496663375608,
+          "nll_leverage": 29.351339891258718,
+          "outlier_norm": 62.99025977997263,
+          "nonoutlier_norm": 60.9619342038538
+        },
+        {
+          "seed": 1234,
+          "outlier_ppl": 29.858718218444803,
+          "nonoutlier_ppl": 7.613655463800085,
+          "ppl_leverage": 97.35257895730388,
+          "nll_leverage": 45.378623351816564,
+          "outlier_norm": 63.21942678363639,
+          "nonoutlier_norm": 60.90919214289416
+        },
+        {
+          "seed": 2024,
+          "outlier_ppl": 81.38708344583824,
+          "nonoutlier_ppl": 7.614881210424581,
+          "ppl_leverage": 318.85042194195626,
+          "nll_leverage": 77.5375677575273,
+          "outlier_norm": 63.21690208310096,
+          "nonoutlier_norm": 60.930556495437905
+        },
+        {
+          "seed": 3141,
+          "outlier_ppl": 20.300688124846232,
+          "nonoutlier_ppl": 7.6463402356307775,
+          "ppl_leverage": 49.01384022294694,
+          "nll_leverage": 28.837222201075615,
+          "outlier_norm": 63.47083676099304,
+          "nonoutlier_norm": 60.99348389889694
+        },
+        {
+          "seed": 4567,
+          "outlier_ppl": 17.54087802739846,
+          "nonoutlier_ppl": 7.590904759837332,
+          "ppl_leverage": 48.8086490617965,
+          "nll_leverage": 31.1289073220263,
+          "outlier_norm": 63.114048013422696,
+          "nonoutlier_norm": 61.035650123001886
+        },
+        {
+          "seed": 5678,
+          "outlier_ppl": 37.502751398764026,
+          "nonoutlier_ppl": 7.59738756095906,
+          "ppl_leverage": 140.35165421588349,
+          "nll_leverage": 56.721002545303904,
+          "outlier_norm": 63.17438217724462,
+          "nonoutlier_norm": 61.033110090701996
+        }
+      ],
+      "ppl_leverage": {
+        "median": 89.79945389835476,
+        "mean": 104.09277566293888,
+        "iqr": [
+          51.75341204330077,
+          99.00410246033138
+        ]
+      },
+      "nll_leverage": {
+        "median": 41.27766335650303,
+        "mean": 43.40635823033425,
+        "iqr": [
+          31.7858242659782,
+          47.942418905574726
+        ]
+      }
+    },
+    "0.005": {
+      "flip_rate": 0.005,
+      "n_flips": 241387,
+      "seeds": [
+        {
+          "seed": 42,
+          "outlier_ppl": 7.649708933462475,
+          "nonoutlier_ppl": 7.40493634909053,
+          "ppl_leverage": 12.049499798917795,
+          "nll_leverage": 11.854536122262427,
+          "outlier_norm": 19.96368162399849,
+          "nonoutlier_norm": 19.283096200358116
+        },
+        {
+          "seed": 123,
+          "outlier_ppl": 7.604491858055064,
+          "nonoutlier_ppl": 7.402540811347064,
+          "ppl_leverage": 11.221834442634137,
+          "nll_leverage": 11.071423154984577,
+          "outlier_norm": 19.937408925389555,
+          "nonoutlier_norm": 19.222979717482666
+        },
+        {
+          "seed": 456,
+          "outlier_ppl": 7.622008135221349,
+          "nonoutlier_ppl": 7.398287028734126,
+          "ppl_leverage": 15.430782478726538,
+          "nll_leverage": 15.20199241903217,
+          "outlier_norm": 20.003470310495892,
+          "nonoutlier_norm": 19.253102238361
+        },
+        {
+          "seed": 789,
+          "outlier_ppl": 7.607433650763586,
+          "nonoutlier_ppl": 7.404867319363136,
+          "ppl_leverage": 10.172813007411984,
+          "nll_leverage": 10.0360893252717,
+          "outlier_norm": 19.880651282343752,
+          "nonoutlier_norm": 19.165753594363142
+        },
+        {
+          "seed": 1000,
+          "outlier_ppl": 7.62480808965126,
+          "nonoutlier_ppl": 7.410759936609091,
+          "ppl_leverage": 8.651147209695038,
+          "nll_leverage": 8.528488084394509,
+          "outlier_norm": 19.95451485162862,
+          "nonoutlier_norm": 19.27190708227628
+        },
+        {
+          "seed": 1234,
+          "outlier_ppl": 7.61244089490417,
+          "nonoutlier_ppl": 7.413865495229818,
+          "ppl_leverage": 7.388858650448417,
+          "nll_leverage": 7.291570545288312,
+          "outlier_norm": 20.031860342264086,
+          "nonoutlier_norm": 19.26460722549864
+        },
+        {
+          "seed": 2024,
+          "outlier_ppl": 7.572890389912752,
+          "nonoutlier_ppl": 7.406013366792485,
+          "ppl_leverage": 8.183875896024306,
+          "nll_leverage": 8.092988574225433,
+          "outlier_norm": 19.887092222664275,
+          "nonoutlier_norm": 19.27404472467645
+        },
+        {
+          "seed": 3141,
+          "outlier_ppl": 7.576788964276934,
+          "nonoutlier_ppl": 7.406723048155661,
+          "ppl_leverage": 8.104116319654489,
+          "nll_leverage": 8.01242796383971,
+          "outlier_norm": 19.959278421450524,
+          "nonoutlier_norm": 19.30218566219615
+        },
+        {
+          "seed": 4567,
+          "outlier_ppl": 7.649949774366259,
+          "nonoutlier_ppl": 7.405067613275788,
+          "ppl_leverage": 11.989328868680285,
+          "nll_leverage": 11.795256591802481,
+          "outlier_norm": 19.919209955014118,
+          "nonoutlier_norm": 19.27106225230024
+        },
+        {
+          "seed": 5678,
+          "outlier_ppl": 7.589021883251474,
+          "nonoutlier_ppl": 7.401773294710343,
+          "ppl_leverage": 10.86073501813516,
+          "nll_leverage": 10.725575092696502,
+          "outlier_norm": 20.036219225981284,
+          "nonoutlier_norm": 19.282234451164822
+        }
+      ],
+      "ppl_leverage": {
+        "median": 10.51677401277357,
+        "mean": 10.405299169032816,
+        "iqr": [
+          8.300693724441988,
+          11.797455262168748
+        ]
+      },
+      "nll_leverage": {
+        "median": 10.380832208984101,
+        "mean": 10.261034787379781,
+        "iqr": [
+          8.201863451767702,
+          11.614298232598005
+        ]
+      }
+    },
+    "0.001": {
+      "flip_rate": 0.001,
+      "n_flips": 48277,
+      "seeds": [
+        {
+          "seed": 42,
+          "outlier_ppl": 7.424789546218838,
+          "nonoutlier_ppl": 7.38559686509546,
+          "ppl_leverage": 14.93327375283444,
+          "nll_leverage": 14.893788139571155,
+          "outlier_norm": 9.028795799826835,
+          "nonoutlier_norm": 8.614221001738745
+        },
+        {
+          "seed": 123,
+          "outlier_ppl": 7.425781902496924,
+          "nonoutlier_ppl": 7.384280648876232,
+          "ppl_leverage": 28.72910428381339,
+          "nll_leverage": 28.64867090095886,
+          "outlier_norm": 8.738855185352456,
+          "nonoutlier_norm": 8.575295792974824
+        },
+        {
+          "seed": 456,
+          "outlier_ppl": 7.410201805651944,
+          "nonoutlier_ppl": 7.388240394211322,
+          "ppl_leverage": 5.0248807157057875,
+          "nll_leverage": 5.017426381605185,
+          "outlier_norm": 9.031599836602622,
+          "nonoutlier_norm": 8.59211476807335
+        },
+        {
+          "seed": 789,
+          "outlier_ppl": 7.424212038393399,
+          "nonoutlier_ppl": 7.388725965926641,
+          "ppl_leverage": 6.972090841121584,
+          "nll_leverage": 6.955399478426891,
+          "outlier_norm": 8.923872635534787,
+          "nonoutlier_norm": 8.555923943893577
+        },
+        {
+          "seed": 1000,
+          "outlier_ppl": 7.418279365055297,
+          "nonoutlier_ppl": 7.387168426872671,
+          "ppl_leverage": 8.09575180555833,
+          "nll_leverage": 8.078750276089524,
+          "outlier_norm": 9.016776079182714,
+          "nonoutlier_norm": 8.607887430327118
+        },
+        {
+          "seed": 1234,
+          "outlier_ppl": 7.423541389130748,
+          "nonoutlier_ppl": 7.388382283897511,
+          "ppl_leverage": 7.280315166093034,
+          "nll_leverage": 7.2630453244427375,
+          "outlier_norm": 9.035104107407365,
+          "nonoutlier_norm": 8.591351982542646
+        },
+        {
+          "seed": 2024,
+          "outlier_ppl": 7.421492027563374,
+          "nonoutlier_ppl": 7.386969673815602,
+          "ppl_leverage": 9.247704036713614,
+          "nll_leverage": 9.226159929332553,
+          "outlier_norm": 8.808751059605587,
+          "nonoutlier_norm": 8.639725208857646
+        },
+        {
+          "seed": 3141,
+          "outlier_ppl": 7.394276326926185,
+          "nonoutlier_ppl": 7.380791975707696,
+          "ppl_leverage": 11.492345709893215,
+          "nll_leverage": Infinity,
+          "outlier_norm": 8.679628826942217,
+          "nonoutlier_norm": 8.635534515006196
+        },
+        {
+          "seed": 4567,
+          "outlier_ppl": 7.429339842894666,
+          "nonoutlier_ppl": 7.384343148655076,
+          "ppl_leverage": 29.85943685091425,
+          "nll_leverage": 29.76882691655586,
+          "outlier_norm": 8.825658673136497,
+          "nonoutlier_norm": 8.571928749931166
+        },
+        {
+          "seed": 5678,
+          "outlier_ppl": 7.423064325168659,
+          "nonoutlier_ppl": 7.388298347583871,
+          "ppl_leverage": 7.3046187480745,
+          "nll_leverage": 7.287484233552482,
+          "outlier_norm": 8.995383562155526,
+          "nonoutlier_norm": 8.61567117141124
+        }
+      ],
+      "ppl_leverage": {
+        "median": 8.671727921135972,
+        "mean": 12.893952191072213,
+        "iqr": [
+          7.2863910615884,
+          14.073041742099134
+        ]
+      },
+      "nll_leverage": {
+        "median": 8.652455102711038,
+        "mean": Infinity,
+        "iqr": [
+          7.2691550517201735,
+          25.209950210611932
+        ]
+      }
+    },
+    "0.0005": {
+      "flip_rate": 0.0005,
+      "n_flips": 24138,
+      "seeds": [
+        {
+          "seed": 42,
+          "outlier_ppl": 7.3984459568473415,
+          "nonoutlier_ppl": 7.38464729245323,
+          "ppl_leverage": 8.405453324474784,
+          "nll_leverage": 8.397609712313876,
+          "outlier_norm": 6.377784121056451,
+          "nonoutlier_norm": 6.119010643867653
+        },
+        {
+          "seed": 123,
+          "outlier_ppl": 7.400892839900776,
+          "nonoutlier_ppl": 7.38475522029704,
+          "ppl_leverage": 9.186535951595646,
+          "nll_leverage": 9.176512614422363,
+          "outlier_norm": 6.2046510563253,
+          "nonoutlier_norm": 6.050413845819844
+        },
+        {
+          "seed": 456,
+          "outlier_ppl": 7.407594394655327,
+          "nonoutlier_ppl": 7.385040629259637,
+          "ppl_leverage": 10.994365520223404,
+          "nll_leverage": 10.977610484848876,
+          "outlier_norm": 6.343291693607734,
+          "nonoutlier_norm": 6.0592658471304235
+        },
+        {
+          "seed": 789,
+          "outlier_ppl": 7.400733771001749,
+          "nonoutlier_ppl": 7.385317245263368,
+          "ppl_leverage": 7.085637127394346,
+          "nll_leverage": 7.078251502830363,
+          "outlier_norm": 6.253927255817998,
+          "nonoutlier_norm": 6.067622272279521
+        },
+        {
+          "seed": 1000,
+          "outlier_ppl": 7.395109712247481,
+          "nonoutlier_ppl": 7.385585947749764,
+          "ppl_leverage": 4.398957262318531,
+          "nll_leverage": 4.396123276051811,
+          "outlier_norm": 6.475396468937762,
+          "nonoutlier_norm": 6.069699446701708
+        },
+        {
+          "seed": 1234,
+          "outlier_ppl": 7.412549454649226,
+          "nonoutlier_ppl": 7.385817856772202,
+          "ppl_leverage": 9.811039670019543,
+          "nll_leverage": 9.793326563180361,
+          "outlier_norm": 6.4607064183896785,
+          "nonoutlier_norm": 6.0937474959930755
+        },
+        {
+          "seed": 2024,
+          "outlier_ppl": 7.408805513996551,
+          "nonoutlier_ppl": 7.382871727352129,
+          "ppl_leverage": 26.021532780259093,
+          "nll_leverage": 296.0351053181713,
+          "outlier_norm": 6.185492103076396,
+          "nonoutlier_norm": 6.093072785136069
+        },
+        {
+          "seed": 3141,
+          "outlier_ppl": 7.398550117468289,
+          "nonoutlier_ppl": 7.381431748889579,
+          "ppl_leverage": 15.766136251996521,
+          "nll_leverage": Infinity,
+          "outlier_norm": 6.156109764709377,
+          "nonoutlier_norm": 6.075175768660293
+        },
+        {
+          "seed": 4567,
+          "outlier_ppl": 7.403470532519532,
+          "nonoutlier_ppl": 7.3870587906083145,
+          "ppl_leverage": 4.839175131842114,
+          "nll_leverage": 4.833806993698986,
+          "outlier_norm": 6.193269294076448,
+          "nonoutlier_norm": 5.993655983482856
+        },
+        {
+          "seed": 5678,
+          "outlier_ppl": 7.396378217867346,
+          "nonoutlier_ppl": 7.382422974485971,
+          "ppl_leverage": 13.594236651053748,
+          "nll_leverage": Infinity,
+          "outlier_norm": 6.425727969241492,
+          "nonoutlier_norm": 6.083985472261137
+        }
+      ],
+      "ppl_leverage": {
+        "median": 9.498787810807595,
+        "mean": 11.010306967117774,
+        "iqr": [
+          7.4155911766644556,
+          12.944268868346162
+        ]
+      },
+      "nll_leverage": {
+        "median": 9.484919588801361,
+        "mean": Infinity,
+        "iqr": [
+          7.408091055201242,
+          224.7707316098407
+        ]
+      }
+    },
+    "0.0001": {
+      "flip_rate": 0.0001,
+      "n_flips": 4827,
+      "seeds": [
+        {
+          "seed": 42,
+          "outlier_ppl": 7.386904598101688,
+          "nonoutlier_ppl": 7.384212075783816,
+          "ppl_leverage": 2.885394972504587,
+          "nll_leverage": 2.88486902927535,
+          "outlier_norm": 3.024336432352759,
+          "nonoutlier_norm": 2.7069637185572897
+        },
+        {
+          "seed": 123,
+          "outlier_ppl": 7.3855313612633555,
+          "nonoutlier_ppl": 7.384648700963056,
+          "ppl_leverage": 1.4733474302674328,
+          "nll_leverage": 1.4732593816377755,
+          "outlier_norm": 2.7720833602229447,
+          "nonoutlier_norm": 2.678062524589836
+        },
+        {
+          "seed": 456,
+          "outlier_ppl": 7.386225344021074,
+          "nonoutlier_ppl": 7.383604892795936,
+          "ppl_leverage": 3.441362804782244,
+          "nll_leverage": 4.1913798649104805,
+          "outlier_norm": 2.7589514220407367,
+          "nonoutlier_norm": 2.697573037276817
+        },
+        {
+          "seed": 789,
+          "outlier_ppl": 7.38435318388012,
+          "nonoutlier_ppl": 7.383491788695498,
+          "ppl_leverage": 1.5692026638278733,
+          "nll_leverage": 2.2168614772451307,
+          "outlier_norm": 2.715628783527368,
+          "nonoutlier_norm": 2.7650797678252474
+        },
+        {
+          "seed": 1000,
+          "outlier_ppl": 7.382761274763229,
+          "nonoutlier_ppl": 7.384110405682735,
+          "ppl_leverage": -0.01711854209352142,
+          "nll_leverage": -0.01712010617169546,
+          "outlier_norm": 3.0840103892412354,
+          "nonoutlier_norm": 2.79626004155436
+        },
+        {
+          "seed": 1234,
+          "outlier_ppl": 7.388266376290216,
+          "nonoutlier_ppl": 7.383941046648476,
+          "ppl_leverage": 4.7381893205248184,
+          "nll_leverage": 4.736802069071782,
+          "outlier_norm": 3.1055531808184025,
+          "nonoutlier_norm": 2.7514279299597906
+        },
+        {
+          "seed": 2024,
+          "outlier_ppl": 7.385315396426912,
+          "nonoutlier_ppl": 7.383152222747334,
+          "ppl_leverage": 2.5314152106199472,
+          "nll_leverage": 6.873326959838246,
+          "outlier_norm": 2.7947814287663317,
+          "nonoutlier_norm": 2.7427568849834105
+        },
+        {
+          "seed": 3141,
+          "outlier_ppl": 7.391755938879431,
+          "nonoutlier_ppl": 7.383160936141753,
+          "ppl_leverage": 8.971957663138852,
+          "nll_leverage": 23.78729862252209,
+          "outlier_norm": 2.761128439396886,
+          "nonoutlier_norm": 2.7346805074866323
+        },
+        {
+          "seed": 4567,
+          "outlier_ppl": 7.385479504474959,
+          "nonoutlier_ppl": 7.384418941350118,
+          "ppl_leverage": 1.6486782783865388,
+          "nll_leverage": 1.6485598923279974,
+          "outlier_norm": 2.8795498111819446,
+          "nonoutlier_norm": 2.7387526211188487
+        },
+        {
+          "seed": 5678,
+          "outlier_ppl": 7.384763583450297,
+          "nonoutlier_ppl": 7.382229189271174,
+          "ppl_leverage": 1.9796022340052843,
+          "nll_leverage": Infinity,
+          "outlier_norm": 2.7707806393385996,
+          "nonoutlier_norm": 2.6856981047618262
+        }
+      ],
+      "ppl_leverage": {
+        "median": 2.255508722312616,
+        "mean": 2.9222032035964056,
+        "iqr": [
+          1.5890715674675397,
+          3.30237084671283
+        ]
+      },
+      "nll_leverage": {
+        "median": 3.5381244470929154,
+        "mean": Infinity,
+        "iqr": [
+          1.7906352885572807,
+          6.33919573714663
+        ]
+      }
+    }
+  }
+}

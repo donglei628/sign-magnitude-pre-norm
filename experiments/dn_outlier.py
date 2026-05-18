@@ -39,7 +39,8 @@ except ImportError:
     print("ERROR: transformers not installed")
     sys.exit(1)
 
-SEED_LIST = [42, 123, 456, 789, 1000]
+SEED_LIST = [42, 123, 456, 789, 1000, 1234, 2024, 3141, 4567, 5678,
+             6789, 7890, 8901, 9012, 1111, 2222, 3333, 4444, 5555, 6666]
 
 
 def get_linear_layers(model):
@@ -202,6 +203,82 @@ def make_targeted_sign_deltas(model, outlier_dims, flip_frac, seed,
     return deltas, total_flipped, total_elements
 
 
+def make_count_matched_deltas(model, outlier_dims, n_flips, seed,
+                               target="outlier"):
+    """Create sign-flip perturbation with a fixed count of flips.
+
+    Samples exactly n_flips weights from the specified pool (outlier or
+    non-outlier columns) and flips their signs. No Frobenius rescaling.
+    This enables a clean per-flip leverage comparison.
+
+    Uses per-layer proportional allocation to avoid building the full
+    candidate list in memory.
+    """
+    all_layers = get_linear_layers(model)
+    rng = np.random.RandomState(seed)
+
+    # Step 1: Count pool size per layer
+    layer_pool_sizes = []
+    for name, module in all_layers:
+        W = module.weight.data
+        m, n = W.shape
+        outlier_set = outlier_dims.get(name, set())
+        if target == "outlier":
+            n_cols = sum(1 for j in range(n) if j in outlier_set)
+        else:
+            n_cols = sum(1 for j in range(n) if j not in outlier_set)
+        layer_pool_sizes.append(m * n_cols)
+
+    total_pool = sum(layer_pool_sizes)
+    actual_flips = min(n_flips, total_pool)
+
+    # Step 2: Allocate flips to layers proportionally
+    layer_flips = []
+    remaining = actual_flips
+    for i, size in enumerate(layer_pool_sizes):
+        if i == len(layer_pool_sizes) - 1:
+            layer_flips.append(remaining)
+        else:
+            alloc = int(round(actual_flips * size / total_pool))
+            alloc = min(alloc, remaining, size)
+            layer_flips.append(alloc)
+            remaining -= alloc
+
+    # Step 3: For each layer, sample positions within the pool
+    deltas = []
+    total_flipped = 0
+    for li, (name, module) in enumerate(all_layers):
+        W = module.weight.data
+        m, n = W.shape
+        outlier_set = outlier_dims.get(name, set())
+
+        if target == "outlier":
+            pool_cols = [j for j in range(n) if j in outlier_set]
+        else:
+            pool_cols = [j for j in range(n) if j not in outlier_set]
+
+        n_to_flip = layer_flips[li]
+        pool_size = m * len(pool_cols)
+
+        delta = torch.zeros_like(W.cpu())
+        if n_to_flip > 0 and pool_size > 0:
+            # Sample flat indices within the pool
+            flat_idx = rng.choice(pool_size, size=min(n_to_flip, pool_size),
+                                  replace=False)
+            n_pool_cols = len(pool_cols)
+            for idx in flat_idx:
+                row = idx // n_pool_cols
+                col_local = idx % n_pool_cols
+                col = pool_cols[col_local]
+                delta[row, col] = -2.0 * W[row, col].item()
+            total_flipped += len(flat_idx)
+
+        deltas.append(delta)
+
+    frob = math.sqrt(sum(d.pow(2).sum().item() for d in deltas))
+    return deltas, total_flipped, frob
+
+
 def frobenius_rescale_deltas(deltas, target_norm):
     """Rescale deltas to match target Frobenius norm."""
     current_norm = math.sqrt(sum(d.pow(2).sum().item() for d in deltas))
@@ -232,7 +309,7 @@ def main():
                         default="TinyLlama/TinyLlama-1.1B-intermediate-step-1431k-3T")
     parser.add_argument("--device", type=str, default="cuda")
     parser.add_argument("--dtype", type=str, default="float16")
-    parser.add_argument("--n-seeds", type=int, default=5)
+    parser.add_argument("--n-seeds", type=int, default=20)
     parser.add_argument("--n-samples", type=int, default=10)
     parser.add_argument("--flip-rate", type=float, default=0.05)
     parser.add_argument("--outlier-pct", type=float, default=0.05,
@@ -345,14 +422,39 @@ def main():
               f"(orig {nonoutlier_orig_norm:.1f}), "
               f"flipped={n_flipped_n}")
 
-        # Compute ratios
+        # 4. Count-matched control: same number of flips from each pool
+        #    (no Frobenius rescaling - tests per-flip leverage directly)
+        matched_count = n_flipped_o  # match the outlier flip count
+        cm_outlier_deltas, cm_n_o, cm_norm_o = make_count_matched_deltas(
+            model, outlier_dims, matched_count, seed + 10000, target="outlier")
+        cm_nonoutlier_deltas, cm_n_n, cm_norm_n = make_count_matched_deltas(
+            model, outlier_dims, matched_count, seed + 20000, target="non_outlier")
+
+        apply_deltas(model, cm_outlier_deltas)
+        cm_outlier_ppl = evaluate_ppl(model, tokenizer, args.device,
+                                       args.n_samples)
+        unapply_deltas(model, cm_outlier_deltas)
+
+        apply_deltas(model, cm_nonoutlier_deltas)
+        cm_nonoutlier_ppl = evaluate_ppl(model, tokenizer, args.device,
+                                          args.n_samples)
+        unapply_deltas(model, cm_nonoutlier_deltas)
+
+        cm_ratio = (cm_outlier_ppl - baseline_ppl) / max(
+            cm_nonoutlier_ppl - baseline_ppl, 0.01)
+        print(f"  Count-matched ({matched_count} flips each):")
+        print(f"    Outlier:     PPL={cm_outlier_ppl:.2f}, ||dW||={cm_norm_o:.1f}")
+        print(f"    Non-outlier: PPL={cm_nonoutlier_ppl:.2f}, ||dW||={cm_norm_n:.1f}")
+        print(f"    Per-flip leverage ratio: {cm_ratio:.2f}x")
+
+        # Compute ratios (original Frobenius-matched experiment)
         outlier_vs_nonoutlier = (outlier_ppl - baseline_ppl) / max(
             nonoutlier_ppl - baseline_ppl, 0.01)
         outlier_vs_random = (outlier_ppl - baseline_ppl) / max(
             random_ppl - baseline_ppl, 0.01)
 
-        print(f"  Outlier/Non-outlier PPL damage ratio: {outlier_vs_nonoutlier:.2f}x")
-        print(f"  Outlier/Random PPL damage ratio: {outlier_vs_random:.2f}x")
+        print(f"  Frob-matched Outlier/Non-outlier ratio: {outlier_vs_nonoutlier:.2f}x")
+        print(f"  Frob-matched Outlier/Random ratio: {outlier_vs_random:.2f}x")
 
         results.append({
             "seed": seed,
@@ -368,6 +470,15 @@ def main():
             "n_flipped_nonoutlier": n_flipped_n,
             "outlier_vs_nonoutlier": outlier_vs_nonoutlier,
             "outlier_vs_random": outlier_vs_random,
+            # Count-matched control
+            "count_matched": {
+                "n_flips": matched_count,
+                "outlier_ppl": cm_outlier_ppl,
+                "nonoutlier_ppl": cm_nonoutlier_ppl,
+                "outlier_norm": cm_norm_o,
+                "nonoutlier_norm": cm_norm_n,
+                "leverage_ratio": cm_ratio,
+            },
         })
 
     # Summary
@@ -376,6 +487,7 @@ def main():
     o_ppls = [r["outlier_ppl"] for r in results]
     n_ppls = [r["nonoutlier_ppl"] for r in results]
     r_ppls = [r["random_ppl"] for r in results]
+    cm_ratios = [r["count_matched"]["leverage_ratio"] for r in results]
 
     data = {
         "experiment": "exp_d_outlier_features",
@@ -392,8 +504,21 @@ def main():
             "outlier_ppl": {"mean": float(np.mean(o_ppls)), "std": float(np.std(o_ppls))},
             "nonoutlier_ppl": {"mean": float(np.mean(n_ppls)), "std": float(np.std(n_ppls))},
             "random_ppl": {"mean": float(np.mean(r_ppls)), "std": float(np.std(r_ppls))},
-            "outlier_vs_nonoutlier": {"mean": float(np.mean(o_vs_no)), "std": float(np.std(o_vs_no))},
+            "outlier_vs_nonoutlier": {
+                "mean": float(np.mean(o_vs_no)),
+                "std": float(np.std(o_vs_no)),
+                "median": float(np.median(o_vs_no)),
+                "q25": float(np.percentile(o_vs_no, 25)),
+                "q75": float(np.percentile(o_vs_no, 75)),
+            },
             "outlier_vs_random": {"mean": float(np.mean(o_vs_r)), "std": float(np.std(o_vs_r))},
+            "count_matched_leverage": {
+                "mean": float(np.mean(cm_ratios)),
+                "std": float(np.std(cm_ratios)),
+                "median": float(np.median(cm_ratios)),
+                "q25": float(np.percentile(cm_ratios, 25)),
+                "q75": float(np.percentile(cm_ratios, 75)),
+            },
         },
     }
 
@@ -405,11 +530,18 @@ def main():
     print("SUMMARY")
     print("=" * 70)
     print(f"  Baseline PPL: {baseline_ppl:.4f}")
+    print(f"  Seeds: {len(seeds)}")
+    print(f"\n  --- Frobenius-matched experiment ---")
     print(f"  Random sign-flip PPL:      {np.mean(r_ppls):.2f} +/- {np.std(r_ppls):.2f}")
     print(f"  Outlier-targeted PPL:      {np.mean(o_ppls):.2f} +/- {np.std(o_ppls):.2f}")
     print(f"  Non-outlier PPL:           {np.mean(n_ppls):.2f} +/- {np.std(n_ppls):.2f}")
-    print(f"  Outlier/Non-outlier ratio: {np.mean(o_vs_no):.2f}x +/- {np.std(o_vs_no):.2f}")
-    print(f"  Outlier/Random ratio:      {np.mean(o_vs_r):.2f}x +/- {np.std(o_vs_r):.2f}")
+    print(f"  Outlier/Non-outlier ratio: mean={np.mean(o_vs_no):.1f}x, "
+          f"median={np.median(o_vs_no):.1f}x, "
+          f"IQR=[{np.percentile(o_vs_no, 25):.0f}, {np.percentile(o_vs_no, 75):.0f}]")
+    print(f"\n  --- Count-matched control (equal flip count, no rescaling) ---")
+    print(f"  Per-flip leverage ratio:   mean={np.mean(cm_ratios):.1f}x, "
+          f"median={np.median(cm_ratios):.1f}x, "
+          f"IQR=[{np.percentile(cm_ratios, 25):.0f}, {np.percentile(cm_ratios, 75):.0f}]")
 
     if np.mean(o_vs_no) > 1.5:
         print("\n  ==> Outlier-targeted sign-flips are significantly more damaging")

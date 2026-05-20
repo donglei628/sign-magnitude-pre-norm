@@ -4,9 +4,7 @@ Code accompanying the paper:
 
 > **A Geometric Analysis of Sign-Magnitude Asymmetry in a ReLU + RMSNorm Block under Ternary Quantization**
 >
-> Dong Lei, 2026
->
-> *arXiv link will be added after submission.*
+> Anonymous, 2026
 
 ## Overview
 
@@ -134,11 +132,11 @@ No model weights are redistributed in this repository. They are downloaded on de
 ## Citation
 
 ```bibtex
-@misc{lei2026sign,
+@misc{anonymous2026sign,
   title={A Geometric Analysis of Sign-Magnitude Asymmetry in a ReLU + RMSNorm Block under Ternary Quantization},
-  author={Lei, Dong},
+  author={Anonymous},
   year={2026},
-  note={arXiv preprint, link to be added after submission}
+  note={Under review}
 }
 ```
 
